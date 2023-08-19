@@ -320,7 +320,6 @@ Dive into advanced Pandas techniques for complex data manipulation.
 ```python
 df.groupby(['Category', 'Gender']).agg({'Value': 'mean'})
 ```
-
 #### Statistical Analysis: Hypothesis Testing, ANOVA
 Explore statistical analysis techniques such as hypothesis testing and ANOVA.
 ```python
@@ -351,8 +350,417 @@ This guide is designed to be a starting point for your data analysis journey. Co
 
 Begin exploring the topics in order. Each section provides explanations, tasks, and examples to help you grasp concepts effectively. Adjust your learning pace and dive deeper into topics aligned with your interests.
 
-## Happy Learning!
 
-Follow this guide to gain a solid foundation in Python for data analysis. Practice and experimentation are key to mastery. Enjoy your journey to becoming a proficient data analyst with Python!
+
+## Mini Project 1: Exploratory Analysis of E-Commerce Sales Data
+
+### Project Description:
+Analyze an e-commerce sales dataset to gain insights into customer behavior, sales trends, and product performance.
+
+### Dataset:
+Download the "E-Commerce Sales Data" dataset from Kaggle:
+[Download Dataset](https://www.kaggle.com/carrie1/ecommerce-data)
+
+### Solution Outline:
+
+1. **Data Loading and Inspection:**
+   - Load the dataset using Pandas.
+   - Explore basic information using `.info()` and `.describe()`.
+
+2. **Data Cleaning:**
+   - Handle missing data and remove duplicates.
+
+3. **Exploratory Data Analysis (EDA):**
+   - Visualize sales trends over time using line plots.
+   - Analyze product categories and their sales distribution.
+   - Explore customer behavior, such as order frequency and purchase patterns.
+
+4. **Customer Segmentation:**
+   - Segment customers based on their purchase behavior (e.g., high spenders, frequent buyers).
+   - Analyze the characteristics of different customer segments.
+
+5. **Product Analysis:**
+   - Identify top-selling products and product categories.
+   - Analyze product ratings and their relationship with sales.
+
+6. **Data Visualization:**
+   - Create meaningful visualizations to communicate your findings.
+   - Utilize Matplotlib and Seaborn for different types of plots.
+  
+***
+# SOLUTION
+
+# Mini Project 1: Exploratory Analysis of E-Commerce Sales Data
+
+## Project Description
+Analyze an e-commerce sales dataset to gain insights into customer behavior, sales trends, and product performance.
+
+## Solution Outline
+
+### Data Loading and Inspection
+```python
+import pandas as pd
+
+# Load the dataset
+data = pd.read_csv('ecommerce_data.csv')
+
+# Display basic information
+print(data.info())
+
+# Display summary statistics
+print(data.describe())
+```
+
+### Data Cleaning
+```python
+# Handle missing data
+data.dropna(inplace=True)
+
+# Remove duplicates
+data.drop_duplicates(inplace=True)
+```
+
+### Exploratory Data Analysis (EDA)
+```python
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Visualize sales trends over time
+plt.figure(figsize=(10, 6))
+sns.lineplot(x='InvoiceDate', y='Revenue', data=data)
+plt.title('Sales Trends Over Time')
+plt.xlabel('Invoice Date')
+plt.ylabel('Revenue')
+plt.xticks(rotation=45)
+plt.show()
+
+# Analyze product categories and their sales distribution
+plt.figure(figsize=(10, 6))
+sns.barplot(x='Category', y='Revenue', data=data)
+plt.title('Product Categories and Sales Distribution')
+plt.xlabel('Product Category')
+plt.ylabel('Revenue')
+plt.xticks(rotation=45)
+plt.show()
+
+# Explore customer behavior: order frequency and purchase patterns
+plt.figure(figsize=(10, 6))
+sns.countplot(x='CustomerID', data=data)
+plt.title('Order Frequency by Customer')
+plt.xlabel('Customer ID')
+plt.ylabel('Number of Orders')
+plt.xticks(rotation=0)
+plt.show()
+```
+
+### Customer Segmentation
+```python
+# Segment customers based on order frequency and purchase amount
+customer_segment = data.groupby('CustomerID').agg({'InvoiceNo': 'count', 'Revenue': 'sum'})
+customer_segment.rename(columns={'InvoiceNo': 'OrderCount', 'Revenue': 'TotalRevenue'}, inplace=True)
+```
+
+### Product Analysis
+```python
+# Identify top-selling products and product categories
+top_products = data.groupby('StockCode').agg({'Quantity': 'sum'}).sort_values('Quantity', ascending=False).head(10)
+top_categories = data.groupby('Category').agg({'Quantity': 'sum'}).sort_values('Quantity', ascending=False)
+```
+
+### Data Visualization
+```python
+# Visualize customer segmentation
+plt.figure(figsize=(10, 6))
+sns.scatterplot(x='OrderCount', y='TotalRevenue', data=customer_segment)
+plt.title('Customer Segmentation')
+plt.xlabel('Order Count')
+plt.ylabel('Total Revenue')
+plt.show()
+
+# Visualize top-selling products
+plt.figure(figsize=(10, 6))
+sns.barplot(x='StockCode', y='Quantity', data=top_products.reset_index())
+plt.title('Top Selling Products')
+plt.xlabel('Stock Code')
+plt.ylabel('Quantity')
+plt.xticks(rotation=45)
+plt.show()
+
+# Visualize top product categories
+plt.figure(figsize=(10, 6))
+sns.barplot(x='Category', y='Quantity', data=top_categories.reset_index())
+plt.title('Top Product Categories')
+plt.xlabel('Product Category')
+plt.ylabel('Quantity')
+plt.xticks(rotation=45)
+plt.show()
+```
+
+## Conclusion
+This mini project allowed us to explore and analyze an e-commerce sales dataset, gaining insights into customer behavior, sales trends, and product performance. Through data cleaning, visualization, and analysis, we uncovered valuable information to help drive business decisions.
 
 ---
+
+Feel free to use the above solution outline as a guide for your project. You can modify the code snippets and add more analysis as needed to suit your preferences and goals.
+
+***
+## Mini Project 2: Stock Price Analysis and Prediction
+
+### Project Description:
+Analyze historical stock price data, explore patterns, and build a simple stock price prediction model.
+
+### Dataset:
+Download historical stock price data from Yahoo Finance or another financial data source.
+
+### Solution Outline:
+
+1. **Data Loading and Inspection:**
+   - Load historical stock price data using Pandas.
+   - Inspect the dataset and understand its structure.
+
+2. **Data Cleaning:**
+   - Handle missing data and format dates appropriately.
+
+3. **Exploratory Data Analysis (EDA):**
+   - Plot stock price trends over time using line plots.
+   - Calculate daily price returns and visualize their distribution.
+
+4. **Moving Averages:**
+   - Compute moving averages to identify short-term and long-term trends.
+
+5. **Simple Price Prediction Model:**
+   - Create a basic stock price prediction model using linear regression.
+   - Train the model on historical data and make predictions.
+
+6. **Model Evaluation:**
+   - Evaluate the model's performance using metrics such as Mean Absolute Error (MAE) or Root Mean Squared Error (RMSE).
+
+7. **Visualization and Interpretation:**
+   - Visualize the predicted prices against actual prices.
+   - Interpret the model's predictions and limitations.
+***
+# SOLUTION
+
+# Mini Project 2: Stock Price Analysis and Prediction
+
+## Project Description
+Analyze historical stock price data, explore patterns, and build a simple stock price prediction model.
+
+## Solution Outline
+
+### Data Loading and Inspection
+```python
+import pandas as pd
+
+# Load historical stock price data
+data = pd.read_csv('stock_price_data.csv')
+
+# Display basic information
+print(data.info())
+
+# Display first few rows
+print(data.head())
+```
+
+### Data Cleaning
+```python
+# Handle missing data
+data.dropna(inplace=True)
+
+# Format date column as datetime
+data['Date'] = pd.to_datetime(data['Date'])
+```
+
+### Exploratory Data Analysis (EDA)
+```python
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Plot stock price trends over time
+plt.figure(figsize=(10, 6))
+sns.lineplot(x='Date', y='Close', data=data)
+plt.title('Stock Price Trends Over Time')
+plt.xlabel('Date')
+plt.ylabel('Close Price')
+plt.xticks(rotation=45)
+plt.show()
+
+# Calculate daily price returns and visualize their distribution
+data['Daily_Return'] = data['Close'].pct_change()
+plt.figure(figsize=(10, 6))
+sns.histplot(data['Daily_Return'].dropna(), bins=30)
+plt.title('Distribution of Daily Price Returns')
+plt.xlabel('Daily Return')
+plt.ylabel('Frequency')
+plt.show()
+```
+
+### Moving Averages
+```python
+# Calculate moving averages
+data['7-Day MA'] = data['Close'].rolling(window=7).mean()
+data['30-Day MA'] = data['Close'].rolling(window=30).mean()
+```
+
+### Simple Price Prediction Model
+```python
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error
+
+# Prepare data
+X = data[['Open', 'High', 'Low', 'Volume']]
+y = data['Close']
+
+# Split data into training and testing sets
+X_train = X.iloc[:-30]
+X_test = X.iloc[-30:]
+y_train = y.iloc[:-30]
+y_test = y.iloc[-30:]
+
+# Create and train the model
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+# Make predictions
+y_pred = model.predict(X_test)
+
+# Calculate RMSE
+rmse = mean_squared_error(y_test, y_pred, squared=False)
+print(f"Root Mean Squared Error: {rmse:.2f}")
+```
+
+### Visualization and Interpretation
+```python
+# Visualize predicted prices against actual prices
+plt.figure(figsize=(10, 6))
+plt.plot(data['Date'].iloc[-30:], y_test, label='Actual Prices')
+plt.plot(data['Date'].iloc[-30:], y_pred, label='Predicted Prices')
+plt.title('Actual vs. Predicted Stock Prices')
+plt.xlabel('Date')
+plt.ylabel('Close Price')
+plt.xticks(rotation=45)
+plt.legend()
+plt.show()
+```
+
+## Conclusion
+In this mini project, we performed an analysis of historical stock price data, explored trends using moving averages and daily price returns, and built a simple linear regression model for stock price prediction. By visualizing and interpreting the results, we gained insights into the stock's behavior and created a basic prediction model.
+
+
+***
+## Mini Project 3: Web Scraping and Analysis of Movie Ratings
+
+### Project Description:
+Scrape movie ratings and information from a website, analyze the data, and uncover insights about popular movies.
+
+### Dataset:
+Scrape movie ratings and information from a movie rating website using Beautiful Soup and requests.
+
+### Solution Outline:
+
+1. **Web Scraping:**
+   - Use Beautiful Soup and requests to scrape movie ratings and details.
+   - Extract movie titles, ratings, release years, and other relevant information.
+
+2. **Data Cleaning:**
+   - Clean and format the scraped data.
+
+3. **Top Rated Movies:**
+   - Identify and display the top-rated movies.
+   - Plot the distribution of movie ratings.
+
+4. **Movie Release Trends:**
+   - Analyze how the number of movies released each year has changed over time.
+
+5. **Genre Analysis:**
+   - Explore the distribution of movie genres and their popularity.
+
+6. **Data Visualization:**
+   - Create visualizations to showcase your findings.
+   - Use bar plots, histograms, and pie charts to visualize different aspects of the data.
+
+***
+# SOLUTION
+
+# Mini Project 3: Web Scraping and Analysis of Movie Ratings
+
+## Project Description
+Scrape movie ratings and information from a website, analyze the data, and uncover insights about popular movies.
+
+## Solution Outline
+
+### Web Scraping
+```python
+import requests
+from bs4 import BeautifulSoup
+
+# URL of the movie ratings website
+url = 'https://example-movie-ratings-website.com'
+
+# Send a GET request to the website
+response = requests.get(url)
+
+# Parse the HTML content
+soup = BeautifulSoup(response.content, 'html.parser')
+```
+
+### Data Collection
+```python
+# Initialize lists to store data
+movie_titles = []
+movie_ratings = []
+movie_years = []
+
+# Find movie titles, ratings, and release years
+for movie in soup.find_all('div', class_='movie'):
+    title = movie.find('h2').text
+    rating = float(movie.find('span', class_='rating').text)
+    year = int(movie.find('span', class_='year').text)
+    movie_titles.append(title)
+    movie_ratings.append(rating)
+    movie_years.append(year)
+```
+
+### Data Analysis
+```python
+import pandas as pd
+
+# Create a DataFrame from the scraped data
+data = pd.DataFrame({
+    'Title': movie_titles,
+    'Rating': movie_ratings,
+    'Year': movie_years
+})
+
+# Calculate average ratings by year
+average_ratings = data.groupby('Year')['Rating'].mean()
+
+# Identify top-rated movies
+top_rated_movies = data[data['Rating'] == data['Rating'].max()]
+```
+
+### Data Visualization
+```python
+import matplotlib.pyplot as plt
+
+# Plot average ratings over the years
+plt.figure(figsize=(10, 6))
+plt.plot(average_ratings.index, average_ratings.values, marker='o')
+plt.title('Average Ratings of Movies Over the Years')
+plt.xlabel('Year')
+plt.ylabel('Average Rating')
+plt.xticks(rotation=45)
+plt.show()
+
+# Visualize top-rated movies
+plt.figure(figsize=(10, 6))
+plt.bar(top_rated_movies['Title'], top_rated_movies['Rating'])
+plt.title('Top-Rated Movies')
+plt.xlabel('Movie Title')
+plt.ylabel('Rating')
+plt.xticks(rotation=45)
+plt.show()
+```
+
+## Conclusion
+In this mini project, we successfully scraped movie ratings and information from a website, analyzed the data to uncover insights, and visualized the results. Through web scraping and data analysis, we gained valuable information about popular movies and their ratings.
